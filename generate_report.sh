@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
 set -euo pipefail
 #
-# generate_informe.sh
+# generate_report.sh
 #
 # Bash wrapper to invoke the Python report generation script.
 #
 # Usage:
-#   ./generate_informe.sh /path/to/job-<id>/results [--manifest /path/to/manifest.csv] [-o output.md]
+#   ./generate_report.sh /path/to/job-<id>/results [--manifest /path/to/manifest.csv] [-o output.md]
 #
 #
 # Requirements:
 #   - Python 3.6+ with required Python packages installed (e.g. scipy).
-#   - generate_informe.py must be located in the same directory.
+#   - generate_report.py must be located in the same directory.
 #
 # Options:
 #   --manifest <path>   Path to manifest CSV file (optional).
@@ -27,4 +27,4 @@ if [[ $# -lt 1 ]]; then
 fi
 
 # Invoke the Python report generation script
-python3 "$SCRIPT_DIR/generate_informe.py" "$@"
+python3 "$SCRIPT_DIR/generate_report.py" "$@"

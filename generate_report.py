@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-generate_informe.py
+generate_report.py
 
 Generate a Markdown report summarizing processing statistics and errors for a job.
 
@@ -12,7 +12,7 @@ counts processed files, parses error messages, and produces:
 - CSV files per error type listing affected files and timestamps (ISO format).
 
 Usage:
-  python3 generate_informe.py /path/to/job-<id>/results [--manifest /path/to/manifest.csv] [--output /path/to/output.md]
+  python3 generate_report.py /path/to/job-<id>/results [--manifest /path/to/manifest.csv] [--output /path/to/output.md]
 """
 import os
 import sys

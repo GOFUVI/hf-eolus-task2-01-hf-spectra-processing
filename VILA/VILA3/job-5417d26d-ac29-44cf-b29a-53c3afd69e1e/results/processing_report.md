@@ -1,19 +1,19 @@
-# Informe de Procesamiento – Job job-5417d26d-ac29-44cf-b29a-53c3afd69e1e
+# Processing Report – Job job-5417d26d-ac29-44cf-b29a-53c3afd69e1e
 
-**Ficheros en el manifiesto**: 54843  
-**Ficheros procesados con éxito**: 54593  
-**Ficheros con error**: 250  
-**Total de archivos procesados**: 54843  
+**Files in manifest**: 54843  
+**Files processed successfully**: 54593  
+**Files with errors**: 250  
+**Total files processed**: 54843  
 
-## Errores por tipo
+## Errors by type
 
-| Tipo | Descripción | Cantidad | % del total procesados |
+| Type | Description | Count | % of total processed |
 | :--: | ----------- | -------: | ---------------------: |
 | 1 | No valid FOR data found. Please run seasonder_computeFORs first. | 250 | 0.46% |
 
-## Ficheros por tipo de error
+## Files by error type
 
-### Tipo 1: No valid FOR data found. Please run seasonder_computeFORs first. (250 ficheros)
+### Type 1: No valid FOR data found. Please run seasonder_computeFORs first. (250 files)
 
 - INTECMAR/VILA/Spectra/CSS/VILA_CSS_2021_W07_Feb/CSS_VILA_21_02_17_1300.cs
 - INTECMAR/VILA/Spectra/CSS/VILA_CSS_2021_W38_Sep/CSS_VILA_21_09_21_0100.cs
@@ -25,4 +25,4 @@
 - INTECMAR/VILA/Spectra/CSS/VILA_CSS_2020_W15_Apr/CSS_VILA_20_04_06_0200.cs
 - INTECMAR/VILA/Spectra/CSS/VILA_CSS_2020_W14_MarApr/CSS_VILA_20_04_04_1700.cs
 - INTECMAR/VILA/Spectra/CSS/VILA_CSS_2020_W14_MarApr/CSS_VILA_20_04_04_2000.cs
-- ... y 240 ficheros más
+- ... and 240 more files

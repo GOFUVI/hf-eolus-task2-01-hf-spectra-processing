@@ -2,7 +2,7 @@
 
 ## Methodology
 
-- Searched error CSV files prefixed "errores_tipo_1" in the directory and subdirectories.
+- Searched error CSV files prefixed "error_type_1" in the directory and subdirectories.
 - Processed manifest.csv files to count referenced files by month.
 - Extracted months from error record dates (ISO format) and file paths in manifests.
 - Counted the total number of error records and processed files per month.
@@ -16,8 +16,8 @@
 
 ### Analyzed Error Files
 
-- ./PRIO/PRIO2/job-2e340eda-cbdc-4cd8-942c-3407e2297a2d/results/errores_tipo_1_No_valid_FOR_data_found_Please_run_seasonder_computeFORs_first.csv
-- ./PRIO/PRIO1/job-5d87a439-8b17-4575-8bf9-5f9c50adc9d0/results/errores_tipo_1_No_valid_FOR_data_found_Please_run_seasonder_computeFORs_first.csv
+- ./PRIO/PRIO2/job-2e340eda-cbdc-4cd8-942c-3407e2297a2d/results/error_type_1_No_valid_FOR_data_found_Please_run_seasonder_computeFORs_first.csv
+- ./PRIO/PRIO1/job-5d87a439-8b17-4575-8bf9-5f9c50adc9d0/results/error_type_1_No_valid_FOR_data_found_Please_run_seasonder_computeFORs_first.csv
 
 | Month | Error Records | Processed Files | Error Percentage (%) | P-Value | Significant |
 | ----- | -------------:| ---------------:| ---------------------:| -------:| ----------- |
@@ -40,9 +40,9 @@
 
 ### Analyzed Error Files
 
-- ./VILA/VILA2/job-590adfae-11cf-4ec7-8ba0-6436f900b11d/results/errores_tipo_1_No_valid_FOR_data_found_Please_run_seasonder_computeFORs_first.csv
-- ./VILA/VILA3/job-5417d26d-ac29-44cf-b29a-53c3afd69e1e/results/errores_tipo_1_No_valid_FOR_data_found_Please_run_seasonder_computeFORs_first.csv
-- ./VILA/VILA1/job-64ad9141-02c6-443f-9724-dab65d4fdc95/results/errores_tipo_1_No_valid_FOR_data_found_Please_run_seasonder_computeFORs_first.csv
+- ./VILA/VILA2/job-590adfae-11cf-4ec7-8ba0-6436f900b11d/results/error_type_1_No_valid_FOR_data_found_Please_run_seasonder_computeFORs_first.csv
+- ./VILA/VILA3/job-5417d26d-ac29-44cf-b29a-53c3afd69e1e/results/error_type_1_No_valid_FOR_data_found_Please_run_seasonder_computeFORs_first.csv
+- ./VILA/VILA1/job-64ad9141-02c6-443f-9724-dab65d4fdc95/results/error_type_1_No_valid_FOR_data_found_Please_run_seasonder_computeFORs_first.csv
 
 | Month | Error Records | Processed Files | Error Percentage (%) | P-Value | Significant |
 | ----- | -------------:| ---------------:| ---------------------:| -------:| ----------- |

@@ -64,11 +64,9 @@ The processing pipeline comprises nine key stages:
    - Lambda or local containers fetch input files and antenna patterns from S3, execute spectral analysis routines (SeaSondeR scripts), and write Radial Metrics and CS_Objects back to S3.
 
 6. **Error Detection, Classification, and Reporting**  
-   - The raw batch job report (CSV) is downloaded and parsed by `generate_informe.py` (wrapper `generate_informe.sh`).  
+   - The raw batch job report (CSV) is downloaded and parsed by `generate_report.py` (wrapper `generate_report.sh`).  
    - Common issues (e.g., missing segments, file mismatches) are classified into error-type CSV files and summarized in `processing_report.md`.
 
-7. **Type 1 Error Summary**  
-   - `analizar_errores_tipo_1.py` (wrapper `run_analizar_errores_tipo1.sh`) aggregates Type 1 error CSVs across campaigns into `type1_error_report.md`, calculating monthly and overall error rates.
 
 8. **Site Configuration Table Generation**  
    - `generate_hf_processing_table.sh` sources each campaign’s `configure.env`, downloads antenna patterns, extracts metadata (APM date, bearing, resolution, frequency, range cells), and compiles a markdown table in `sites_config.md`.

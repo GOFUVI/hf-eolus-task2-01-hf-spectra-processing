@@ -1,20 +1,20 @@
-# Informe de Procesamiento – Job job-5d87a439-8b17-4575-8bf9-5f9c50adc9d0
+# Processing Report – Job job-5d87a439-8b17-4575-8bf9-5f9c50adc9d0
 
-**Ficheros en el manifiesto**: 47655  
-**Ficheros procesados con éxito**: 47019  
-**Ficheros con error**: 636  
-**Total de archivos procesados**: 47655  
+**Files in manifest**: 47655  
+**Files processed successfully**: 47019  
+**Files with errors**: 636  
+**Total files processed**: 47655  
 
-## Errores por tipo
+## Errors by type
 
-| Tipo | Descripción | Cantidad | % del total procesados |
+| Type | Description | Count | % of total processed |
 | :--: | ----------- | -------: | ---------------------: |
 | 1 | No valid FOR data found. Please run seasonder_computeFORs first. | 629 | 1.32% |
 | 2 | Can't rename columns that don't exist | 7 | 0.01% |
 
-## Ficheros por tipo de error
+## Files by error type
 
-### Tipo 1: No valid FOR data found. Please run seasonder_computeFORs first. (629 ficheros)
+### Type 1: No valid FOR data found. Please run seasonder_computeFORs first. (629 files)
 
 - INTECMAR/PRIO/Spectra/CSS/2014_03_Mar/CSS_PRIO_14_03_18_1130.cs4
 - INTECMAR/PRIO/Spectra/CSS/2014_03_Mar/CSS_PRIO_14_03_18_0930.cs4
@@ -26,9 +26,9 @@
 - INTECMAR/PRIO/Spectra/CSS/2015_04_Apr/CSS_PRIO_15_04_02_0430.cs4
 - INTECMAR/PRIO/Spectra/CSS/2015_04_Apr/CSS_PRIO_15_04_02_0230.cs4
 - INTECMAR/PRIO/Spectra/CSS/2015_03_Mar/CSS_PRIO_15_03_14_0530.cs4
-- ... y 619 ficheros más
+- ... and 619 more files
 
-### Tipo 2: Can't rename columns that don't exist (7 ficheros)
+### Type 2: Can't rename columns that don't exist (7 files)
 
 - INTECMAR/PRIO/Spectra/CSS/2015_03_Mar/CSS_PRIO_15_03_09_0030.cs4
 - INTECMAR/PRIO/Spectra/CSS/2015_03_Mar/CSS_PRIO_15_03_17_1730.cs4
