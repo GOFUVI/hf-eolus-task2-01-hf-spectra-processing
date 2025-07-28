@@ -1,0 +1,1 @@
+[Discussion on the ionospheric contamination detection threshold](https://chatgpt.com/share/68087ec8-0814-800d-ba26-ff9370199bbe)
