@@ -66,15 +66,15 @@ The pipeline comprises eight key stages:
    Within each campaign directory, a Dockerfile and associated setup scripts define a self-contained runtime environment. These artifacts install and configure all necessary software dependencies, ensuring that analyses can be reproduced consistently across different host systems.
    AWS Service(s): Amazon ECR hosts the built Docker images; AWS IAM creates roles and policies for Lambda execution and S3 access.
 
-3. **Manifest Generation**  
+2. **Manifest Generation**
    A manifest preparation script scans the campaign directory to catalog input files along with their metadata (e.g., file paths, checksums, timestamps). The outcome is a standardized CSV manifest and a corresponding JSON manifest, which together serve as the definitive input inventory for downstream processing.
    AWS Service(s): AWS S3API (via AWS CLI) `list-objects-v2` lists files; `jq` formats `Bucket,Key` entries. The manifest CSV is optionally uploaded back to S3 for versioned inputs.
 
-4. **Batch Job Orchestration**  
+3. **Batch Job Orchestration**
    A generic runner script (`run_hf_dataset.sh`) loads campaign-specific configuration from `configure.env` and invokes the batch submission script (`run_batch_job.sh`). The `run_batch_job.sh` script uses Amazon S3 Batch Operations (S3Control) to invoke the containerized Lambda function for each manifest entry, tracking job identifiers and logging execution details. This approach enables fault isolation, scalable parallel execution, and fine-grained performance monitoring.
    AWS Service(s): Amazon S3 Batch Operations (S3Control) submits a `LambdaInvoke` job; AWS STS retrieves account identity; AWS IAM defines batch roles/policies.
 
-5. **Runtime Data Processing**  
+4. **Runtime Data Processing**
    Inside each container, a scripted analysis routine performs data cleaning, spectral analysis, and the derivation of geophysical parameters. Execution parameters—such as analysis thresholds and output configurations—are supplied via environment variables and manifest entries, allowing flexible customization of processing behavior.
    AWS Service(s): AWS Lambda runs the container per manifest entry; AWS CLI within Lambda copies input files and antenna patterns from S3 and uploads processed outputs back to S3 (Radial_Metrics, CS_Objects).
 
@@ -169,38 +169,56 @@ SEASONDER_RDATA_OUTPUT=FALSE        # Disable .RData output
 SEASONDER_S3_OUTPUT_PATH            # S3 URI for processed output
 ```
 
+## Campaign Directory Organization
+
+Raw data and configuration for PRIO and VILA radar sites are organized under the repository root in `PRIO/` and `VILA/`. Each site directory contains subdirectories corresponding to processing periods (distinct antenna pattern measurement campaigns), for example `PRIO1` or `VILA1`. Each period folder contains:
+
+- `configure.env`: Period-specific environment variables (analysis thresholds, S3 paths, IAM roles).
+- `Dockerfile`: Defines the container image with SeaSondeR and period-specific parameters.
+`run_process_hf_pipeline.sh`: Generates the manifest and submits AWS batch jobs.
+Raw `.cs`/`.cs4` spectral files and (optionally) local antenna pattern files.
+Auxiliary scripts (e.g., `generate_report.sh`, `generate_hf_processing_table.sh`) for reporting and table generation.
+
+
+At the repository root, `setup.sh` clones or updates the `SeaSondeRAWSLambdaDocker` pipeline repository into `SeaSondeRAWSLambdaDocker/`. Each site-period runner (e.g., `run_vila1.sh`, `run_prio1.sh`) then copies necessary pipeline artifacts from that folder into its period directory.
+Each site-period runner script (e.g. `run_vila1.sh`, `run_prio1.sh`) bootstraps its period folder by:
+
+- Defining site- and period-specific variables (AWS profile, bucket name, S3 paths, date range, IAM role/policy names, Lambda and ECR identifiers).
+- Copying core pipeline artifacts (`Dockerfile`, `configure_seasonder.sh`, `runtime.R`, `prepare_manifest.sh`, `run_batch_job.sh`) into the period folder.
+- Executing `configure_seasonder.sh` to create or update IAM roles, policies, ECR repository, and Lambda function (with the period’s environment variables).
+- Running `prepare_manifest.sh` to build the CSV/JSON manifest for that period’s spectral files.
+- Optionally invoking `run_batch_job.sh` to submit the AWS S3 Batch Operations job, which triggers the processing Lambda for each manifest entry.
+
 ## Detailed Workflow
 
-The processing pipeline comprises nine key stages:
+The processing pipeline comprises seven key stages:
 
-1. **Campaign Directory Organization**  
-   - Raw data and configuration are organized under `01-HF_processing/PRIO/*` and `01-HF_processing/VILA/*`.  
-   - Each campaign subdirectory hosts a `configure.env` file and may contain auxiliary setup scripts.
 
-2. **Environment Setup and Containerization**  
-   - `setup.sh` installs dependencies or builds the Docker image from the campaign-specific Dockerfile.  
-   - Containerization guarantees reproducible execution regardless of host environment.
+1. **Environment Setup and Containerization**
+   - `setup.sh` clones the SeaSondeRAWSLambdaDocker repository into the local `SeaSondeRAWSLambdaDocker` directory.
+   - See `SeaSondeRAWSLambdaDocker/README.md` for instructions to build and push the Docker image for Lambda deployment.
+   - Containerization guarantees reproducible execution regardless of the host environment.
 
-3. **Manifest Generation**  
+2. **Manifest Generation**
    - A manifest script (invoked by `run_process_hf_pipeline.sh`) scans the campaign directory for raw spectral files, computing checksums and timestamps.  
    - Outputs a CSV and JSON manifest that define the input inventory for downstream jobs.
 
-4. **Batch Job Orchestration**  
+3. **Batch Job Orchestration**  
    - `run_hf_dataset.sh` sources `configure.env` and calls `run_process_hf_pipeline.sh`.  
    - Internally, this uses AWS S3 Batch Operations to invoke the Lambda function for each manifest entry in parallel.
 
-5. **Runtime Data Processing**  
+4. **Runtime Data Processing**  
    - Lambda or local containers fetch input files and antenna patterns from S3, execute spectral analysis routines (SeaSondeR scripts), and write Radial Metrics and CS_Objects back to S3.
 
-6. **Error Detection, Classification, and Reporting**  
+5. **Error Detection and Reporting**
    - The raw batch job report (CSV) is downloaded and parsed by `generate_report.py` (wrapper `generate_report.sh`).  
    - Common issues (e.g., missing segments, file mismatches) are classified into error-type CSV files and summarized in `processing_report.md`.
 
 
-8. **Site Configuration Table Generation**  
+6. **Site Configuration Table Generation**
    - `generate_hf_processing_table.sh` sources each campaign’s `configure.env`, downloads antenna patterns, extracts metadata (APM date, bearing, resolution, frequency, range cells), and compiles a markdown table in `sites_config.md`.
 
-9. **Extensibility and Reproducibility**  
+7. **Extensibility and Reproducibility**
    - Adding new campaigns only requires a new subdirectory with raw data and a `configure.env` file.  
    - The manifest-driven, containerized architecture supports horizontal scaling and integration of new analysis modules.
 
