@@ -1,7 +1,7 @@
 
 ## Summary
 
-This repository implements a reproducible, containerized workflow to process high-frequency (HF) radar spectra from INTECMAR’s VILA and PRIO stations. The primary output is LLUV files containing radial metrics derived from SeaSonde spectral data. The pipeline supports campaign-specific configurations, automatic manifest generation, and scalable AWS batch processing (Lambda & S3 Batch Operations), ensuring consistent, traceable analyses with integrated error detection and reporting.
+This repository implements a reproducible, containerized workflow to process high-frequency (HF) radar spectra from INTECMAR’s VILA and PRIO stations. The primary output is LLUV files containing radial metrics derived from SeaSonde spectral data. The pipeline supports processing period-specific configurations, automatic manifest generation, and scalable AWS batch processing (Lambda & S3 Batch Operations), ensuring consistent, traceable analyses with integrated error detection and reporting.
 
 Processed LLUV datasets are publicly available on Zenodo (PRIO [1]; VILA [2]). The underlying analysis is carried out by the SeaSondeR R package [3], and the AWS-based batch workflow applied to each station is detailed in [4].
 
@@ -26,7 +26,7 @@ https://github.com/GOFUVI/SeaSondeRAWSLambdaDocker?tab=readme-ov-file#11-overvie
 
 ## Analysis Parameters
 
-The core spectral analysis is driven by environment variables defined in each campaign Dockerfile. Key parameters:
+The core spectral analysis is driven by environment variables defined in each processing period Dockerfile. Key parameters:
 
 - **SEASONDER_PATTERN_PATH**: S3 URI or local path to the antenna pattern file. Default: "" (must be set in `configure.env`).
 - **SEASONDER_NSM** (Doppler smoothing): number of Doppler bins for moving-average smoothing of the first-order region. Default: 2.
@@ -51,27 +51,27 @@ The core spectral analysis is driven by environment variables defined in each ca
 - **SEASONDER_RDATA_OUTPUT**: enable or disable saving intermediate .RData objects. Default: FALSE.
 - **SEASONDER_S3_OUTPUT_PATH**: S3 URI for storing processed LLUV outputs. Default: "" (must be set in `configure.env`).
 
-Overrides and campaign-specific parameters (e.g., start/end dates, S3 bucket, IAM roles) are set in `configure.env` files.
+Overrides and processing period-specific parameters (e.g., start/end dates, S3 bucket, IAM roles) are set in `configure.env` files.
 
 ## Workflow and Methodology
 
 The pipeline comprises eight key stages:
 
-1. **Campaign Directory Organization**  
-   Each campaign directory corresponds to a specific processing period during which a particular antenna pattern was applied to the data. This modular layout isolates campaign data, configuration scripts, and results by processing period, enabling independent testing and parallel execution.
-   AWS Service(s): Amazon S3 stores and versions raw spectral files organized by campaign prefixes.
+1. **Processing Period Directory Organization**  
+   Each processing period directory corresponds to a specific processing period during which a particular antenna pattern was applied to the data. This modular layout isolates processing period data, configuration scripts, and results by processing period, enabling independent testing and parallel execution.
+   AWS Service(s): Amazon S3 stores and versions raw spectral files organized by processing period prefixes.
 
   
 2. **Environment Configuration and Containerization**  
-   Within each campaign directory, a Dockerfile and associated setup scripts define a self-contained runtime environment. These artifacts install and configure all necessary software dependencies, ensuring that analyses can be reproduced consistently across different host systems.
+   Within each processing period directory, a Dockerfile and associated setup scripts define a self-contained runtime environment. These artifacts install and configure all necessary software dependencies, ensuring that analyses can be reproduced consistently across different host systems.
    AWS Service(s): Amazon ECR hosts the built Docker images; AWS IAM creates roles and policies for Lambda execution and S3 access.
 
 2. **Manifest Generation**
-   A manifest preparation script scans the campaign directory to catalog input files along with their metadata (e.g., file paths, checksums, timestamps). The outcome is a standardized CSV manifest and a corresponding JSON manifest, which together serve as the definitive input inventory for downstream processing.
+   A manifest preparation script scans the processing period directory to catalog input files along with their metadata (e.g., file paths, checksums, timestamps). The outcome is a standardized CSV manifest and a corresponding JSON manifest, which together serve as the definitive input inventory for downstream processing.
    AWS Service(s): AWS S3API (via AWS CLI) `list-objects-v2` lists files; `jq` formats `Bucket,Key` entries. The manifest CSV is optionally uploaded back to S3 for versioned inputs.
 
 3. **Batch Job Orchestration**
-   A generic runner script (`run_hf_dataset.sh`) loads campaign-specific configuration from `configure.env` and invokes the batch submission script (`run_batch_job.sh`). The `run_batch_job.sh` script uses Amazon S3 Batch Operations (S3Control) to invoke the containerized Lambda function for each manifest entry, tracking job identifiers and logging execution details. This approach enables fault isolation, scalable parallel execution, and fine-grained performance monitoring.
+   A generic runner script (`run_hf_dataset.sh`) loads processing period-specific configuration from `configure.env` and invokes the batch submission script (`run_batch_job.sh`). The `run_batch_job.sh` script uses Amazon S3 Batch Operations (S3Control) to invoke the containerized Lambda function for each manifest entry, tracking job identifiers and logging execution details. This approach enables fault isolation, scalable parallel execution, and fine-grained performance monitoring.
    AWS Service(s): Amazon S3 Batch Operations (S3Control) submits a `LambdaInvoke` job; AWS STS retrieves account identity; AWS IAM defines batch roles/policies.
 
 4. **Runtime Data Processing**
@@ -83,15 +83,15 @@ The pipeline comprises eight key stages:
    AWS Service(s): The S3 Batch Operations job report (CSV) is stored in S3; local scripts download and parse this report for error classification.
 
 7. **Summary Report Generation**  
-   After all batch jobs complete, campaign-level error summaries and per-job processing reports can be consolidated. For example, a dedicated analysis script scans all Type 1 error CSV files (`error_type_1_*.csv`) and corresponding manifest entries across campaigns to produce a consolidated Markdown report (`type1_error_report.md`) summarizing monthly error rates and statistical significance. Processing reports (`processing_report.md`) and other error-type CSVs can likewise be aggregated or analyzed using custom scripts as needed.  
+   After all batch jobs complete, processing period-level error summaries and per-job processing reports can be consolidated. For example, a dedicated analysis script scans all Type 1 error CSV files (`error_type_1_*.csv`) and corresponding manifest entries across processing periods to produce a consolidated Markdown report (`type1_error_report.md`) summarizing monthly error rates and statistical significance. Processing reports (`processing_report.md`) and other error-type CSVs can likewise be aggregated or analyzed using custom scripts as needed.
    AWS Service(s): Aggregation and statistical analysis are performed locally using Python (with SciPy); no additional AWS calls are required for summary generation.
 
 8. **Scalability and Extensibility**  
-   The manifest-driven, containerized design enables straightforward extension to new datasets. Adding a new campaign involves creating a new subdirectory with raw data and invoking the standard sequence of workflow scripts. This architecture supports horizontal scaling across multiple campaigns and facilitates the integration of additional analytical modules.
+   The manifest-driven, containerized design enables straightforward extension to new datasets. Adding a new processing period involves creating a new subdirectory with raw data and invoking the standard sequence of workflow scripts. This architecture supports horizontal scaling across multiple processing periods and facilitates the integration of additional analytical modules.
    AWS Service(s): Amazon S3, Amazon ECR, AWS Lambda, and Amazon S3 Batch Operations combine to enable horizontally scaled, reproducible workflows.
 
 9. **Site Configuration Table Generation**  
-   The script `generate_hf_processing_table.sh` iterates over the campaign directories under VILA/* and PRIO/*, sourcing each `configure.env`, downloading antenna pattern files via AWS CLI, parsing metadata from RUV files, and aggregating these values into a Markdown table. The output is saved to `sites_config.md` for inclusion in subsequent analyses and reporting.  
+   The script `generate_hf_processing_table.sh` iterates over the processing period directories under VILA/* and PRIO/*, sourcing each `configure.env`, downloading antenna pattern files via AWS CLI, parsing metadata from RUV files, and aggregating these values into a Markdown table. The output is saved to `sites_config.md` for inclusion in subsequent analyses and reporting.
    AWS Service(s): AWS CLI for S3 object retrieval.
 
 ## Site Configuration Table
@@ -116,9 +116,9 @@ The following table summarizes the configuration of each site during the process
 
 ## Type 1 Error Statistical Analysis
 
-We performed a detailed analysis of Type 1 errors (missing FOR data) across two campaigns (PRIO and VILA). Table 1 summarizes overall error rates:
+We performed a detailed analysis of Type 1 errors (missing FOR data) across two processing periods (PRIO and VILA). Table 1 summarizes overall error rates:
 
-| Campaign | Error Records | Processed Files | Overall Error Rate (%) |
+| Processing Period | Error Records | Processed Files | Overall Error Rate (%) |
 | -------- | -------------:| ---------------:| ----------------------:|
 | PRIO     | 1,633          | 112,523         | 1.45                   |
 | VILA     | 4,709          | 152,892         | 3.08                   |
@@ -137,7 +137,7 @@ The `01-HF_processing` directory implements a comprehensive, reproducible, and c
 
 Processing leverages AWS to enable scalable, serverless execution:
 - **Amazon S3**: Versioned storage for raw `.cs`/`.cs4` spectral files, antenna pattern files, manifests, and output results.
-- **Amazon ECR**: Hosts Docker images built with campaign-specific dependencies, ensuring environment consistency.
+- **Amazon ECR**: Hosts Docker images built with processing period-specific dependencies, ensuring environment consistency.
 - **AWS IAM**: Defines roles and policies for secure S3 and Lambda operations.
 - **AWS Lambda**: Executes the containerized analysis per manifest entry for parallelized processing.
 - **Amazon S3 Batch Operations**: Orchestrates large-scale Lambda invocations across manifest entries, tracking job status and error reports.
@@ -145,7 +145,7 @@ Processing leverages AWS to enable scalable, serverless execution:
 
 ## Configuration and Analysis Parameters
 
-Each campaign directory contains a `configure.env` file that defines environment variables to customize analysis thresholds, S3 paths, IAM roles, and runtime options. Key parameters include:
+Each processing period directory contains a `configure.env` file that defines environment variables to customize analysis thresholds, S3 paths, IAM roles, and runtime options. Key parameters include:
 
 ```bash
 SEASONDER_PATTERN_PATH             # S3 URI or local path to antenna pattern file
@@ -169,9 +169,9 @@ SEASONDER_RDATA_OUTPUT=FALSE        # Disable .RData output
 SEASONDER_S3_OUTPUT_PATH            # S3 URI for processed output
 ```
 
-## Campaign Directory Organization
+## Processing Period Directory Organization
 
-Raw data and configuration for PRIO and VILA radar sites are organized under the repository root in `PRIO/` and `VILA/`. Each site directory contains subdirectories corresponding to processing periods (distinct antenna pattern measurement campaigns), for example `PRIO1` or `VILA1`. Each period folder contains:
+Raw data and configuration for PRIO and VILA radar sites are organized under the repository root in `PRIO/` and `VILA/`. Each site directory contains subdirectories corresponding to processing periods (distinct antenna pattern measurement processing periods), for example `PRIO1` or `VILA1`. Each period folder contains:
 
 - `configure.env`: Period-specific environment variables (analysis thresholds, S3 paths, IAM roles).
 - `Dockerfile`: Defines the container image with SeaSondeR and period-specific parameters.
@@ -200,7 +200,7 @@ The processing pipeline comprises seven key stages:
    - Containerization guarantees reproducible execution regardless of the host environment.
 
 2. **Manifest Generation**
-   - A manifest script (invoked by `run_process_hf_pipeline.sh`) scans the campaign directory for raw spectral files, computing checksums and timestamps.  
+- A manifest script (invoked by `run_process_hf_pipeline.sh`) scans the processing period directory for raw spectral files, computing checksums and timestamps.  
    - Outputs a CSV and JSON manifest that define the input inventory for downstream jobs.
 
 3. **Batch Job Orchestration**  
@@ -216,15 +216,15 @@ The processing pipeline comprises seven key stages:
 
 
 6. **Site Configuration Table Generation**
-   - `generate_hf_processing_table.sh` sources each campaign’s `configure.env`, downloads antenna patterns, extracts metadata (APM date, bearing, resolution, frequency, range cells), and compiles a markdown table in `sites_config.md`.
+   - `generate_hf_processing_table.sh` sources each processing period’s `configure.env`, downloads antenna patterns, extracts metadata (APM date, bearing, resolution, frequency, range cells), and compiles a markdown table in `sites_config.md`.
 
 7. **Extensibility and Reproducibility**
-   - Adding new campaigns only requires a new subdirectory with raw data and a `configure.env` file.  
+   - Adding new processing periods only requires a new subdirectory with raw data and a `configure.env` file.  
    - The manifest-driven, containerized architecture supports horizontal scaling and integration of new analysis modules.
 
 ## Site Configuration Table
 
-The `sites_config.md` file presents a summary of antenna pattern metadata and processing parameters for each campaign. Example columns include:
+The `sites_config.md` file presents a summary of antenna pattern metadata and processing parameters for each processing period. Example columns include:
 
 | Site | APM Date | Processing Period | Antenna Bearing | Frequency (MHz) | Range Cell (km) | N Doppler Cells |
 |------|----------|-------------------|-----------------|-----------------|-----------------|-----------------|
