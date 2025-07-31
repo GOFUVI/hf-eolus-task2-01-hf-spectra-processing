@@ -37,11 +37,41 @@ This command will prompt you to authenticate and select an AWS SSO profile.
 As detailed in [1] (see the Overview/Prerequisites section at
 https://github.com/GOFUVI/SeaSondeRAWSLambdaDocker?tab=readme-ov-file#11-overview--prerequisites), the key technologies used in this workflow are listed.
 
-## Analysis Parameters
+## Processing Period Directory Organization
+
+Raw data and configuration for PRIO and VILA radar sites are organized under the repository root in `PRIO/` and `VILA/`. Each site directory contains subdirectories corresponding to processing periods, for example `PRIO1` or `VILA1`. Periods are defined by distinct antenna pattern measurements. When first created a period folder should contain a `configure.env` file with period-specific environment variables (analysis thresholds, S3 paths, IAM roles).
+
+In order to setup and run an analysis period we start by running `setup.sh` at the repository root, which clones or updates the `SeaSondeRAWSLambdaDocker` pipeline repository into `SeaSondeRAWSLambdaDocker/`. Then the user creates a period subfolder and includes the `configure.env`file. Then the user runs `run_hf_dataset.sh` on the period folder. `run_hf_dataset.sh` bootstraps a period folder and runs the analysis by:
+
+- Defining site- and period-specific variables using the `configure.env` file.
+- Copying core pipeline artifacts (`Dockerfile`, `configure_seasonder.sh`, `runtime.R`, `prepare_manifest.sh`, `run_batch_job.sh`) into the period folder.
+- Executing `configure_seasonder.sh` to create or update IAM roles, policies, ECR repository, and Lambda function (with the period’s environment variables).
+- Running `prepare_manifest.sh` to build the CSV/JSON manifest for that period’s spectral files.
+- Optionally invoking `run_batch_job.sh` to submit the AWS S3 Batch Operations job, which triggers the processing Lambda for each manifest entry.
+
+### Processing Periods Configuration Table
+
+The following table summarizes the configuration of each site during the processing periods used, based on the Antenna Pattern Measurements (APMs) conducted at each site.
+
+
+  | Parameter | VILA1 | VILA2 | VILA3 | VILA4 | PRIO1 | PRIO2 |
+|---|---|---|---|---|---|---|
+| Site | VILA | VILA | VILA | VILA | PRIO | PRIO |
+| APM Date | 2011 10 07 12 40 09 | 2015 10 19 13 19 43 | 2018 06 21 17 02 20 | 2021 11 25 11 00 54 | 2015 10 30 11 30 56 | 2021 11 25 10 49 45 |
+| Processing period (start) | 2011-09-30 0730 | 2015-11-13 1830 | 2018-06-21 1702 | 2021-11-25 1100 | 2011-08-04 1200 | 2018-05-23 1030 |
+| Processing period (end) | 2015-08-05 1330 | 2018-06-21 1701 | 2021-11-25 1059 | 2023-05-10 0730 | 2015-04-10 09:30 | 2023-11-23 0730 |
+| Site Location (Lat Lon) | 43.1588833 -9.2108333 | 43.1588833 -9.2108333 | 43.1588833 -9.2108333 | 43.1588833 -9.2108333 | 43.5680000 -8.3140000 | 43.5680000 -8.3140000 |
+| Antenna Bearing (deg true N) | 19.0 | 19.0 | 19.0 | 19.0 | 9.0 | 9.0 |
+| Antenna Pattern resolution (deg) | 1.0 | 1.0 | 1.0 | 1.0 | 1.0 | 1.0 |
+| Transmit Freq (MHz) | 4.860000 | 4.463000 | 4.463000 | 4.463000 | 4.860000 | 4.463000 |
+| Range cell resolution (km) | 5.100274 | 5.096745 | 5.096745 | 5.096745 | 5.100274 | 5.096745 |
+| N Range cells | 44 | 63 | 49 | 49 | 63 | 49 |
+| N Doppler Cells after interpolation | 2048 | 2048 | 2048 | 2048 | 2048 | 2048 |
+
+### Analysis Parameters
 
 The core spectral analysis is driven by environment variables defined in each processing period Dockerfile. Key parameters:
 
-- **SEASONDER_PATTERN_PATH**: S3 URI or local path to the antenna pattern file. Default: "" (must be set in `configure.env`).
 - **SEASONDER_NSM** (Doppler smoothing): number of Doppler bins for moving-average smoothing of the first-order region. Default: 2.
 - **SEASONDER_FDOWN** (Null Below Peak Power): descent level (in dB) below the Bragg peak maximum where null-search begins. Default: 10.
 - **SEASONDER_NOISEFACT** (Noise factor): SNR threshold relative to background noise for retaining Doppler bins in the FOR detection. Default: 3.981072 (6 dB).
@@ -61,8 +91,6 @@ The core spectral analysis is driven by environment variables defined in each pr
   3. off-diagonal power ratio threshold (default: 2)
   4. minimum separation angle between dual-solution bearings in degrees (default: 20)
 - **SEASONDER_DISCARD_NO_SOLUTION**: discard bins with no MUSIC solution. Default: TRUE.
-- **SEASONDER_RDATA_OUTPUT**: enable or disable saving intermediate .RData objects. Default: FALSE.
-- **SEASONDER_S3_OUTPUT_PATH**: S3 URI for storing processed LLUV outputs. Default: "" (must be set in `configure.env`).
 
 Overrides and processing period-specific parameters (e.g., start/end dates, S3 bucket, IAM roles) are set in `configure.env` files.
 
@@ -107,24 +135,6 @@ The pipeline comprises eight key stages:
    The script `generate_hf_processing_table.sh` iterates over the processing period directories under VILA/* and PRIO/*, sourcing each `configure.env`, downloading antenna pattern files via AWS CLI, parsing metadata from RUV files, and aggregating these values into a Markdown table. The output is saved to `sites_config.md` for inclusion in subsequent analyses and reporting.
    AWS Service(s): AWS CLI for S3 object retrieval.
 
-## Site Configuration Table
-
-The following table summarizes the configuration of each site during the processing periods used, based on the Antenna Pattern Measurements (APMs) conducted at each site. It is automatically generated by the script `generate_hf_processing_table.sh` and saved to `sites_config.md`.
-
-
-  | Parameter | VILA1 | VILA2 | VILA3 | VILA4 | PRIO1 | PRIO2 |
-|---|---|---|---|---|---|---|
-| Site | VILA | VILA | VILA | VILA | PRIO | PRIO |
-| APM Date | 2011 10 07 12 40 09 | 2015 10 19 13 19 43 | 2018 06 21 17 02 20 | 2021 11 25 11 00 54 | 2015 10 30 11 30 56 | 2021 11 25 10 49 45 |
-| Processing period (start) | 2011-09-30 0730 | 2015-11-13 1830 | 2018-06-21 1702 | 2021-11-25 1100 | 2011-08-04 1200 | 2018-05-23 1030 |
-| Processing period (end) | 2015-08-05 1330 | 2018-06-21 1701 | 2021-11-25 1059 | 2023-05-10 0730 | 2015-04-10 09:30 | 2023-11-23 0730 |
-| Site Location (Lat Lon) | 43.1588833 -9.2108333 | 43.1588833 -9.2108333 | 43.1588833 -9.2108333 | 43.1588833 -9.2108333 | 43.5680000 -8.3140000 | 43.5680000 -8.3140000 |
-| Antenna Bearing (deg true N) | 19.0 | 19.0 | 19.0 | 19.0 | 9.0 | 9.0 |
-| Antenna Pattern resolution (deg) | 1.0 | 1.0 | 1.0 | 1.0 | 1.0 | 1.0 |
-| Transmit Freq (MHz) | 4.860000 | 4.463000 | 4.463000 | 4.463000 | 4.860000 | 4.463000 |
-| Range cell resolution (km) | 5.100274 | 5.096745 | 5.096745 | 5.096745 | 5.100274 | 5.096745 |
-| N Range cells | 44 | 63 | 49 | 49 | 63 | 49 |
-| N Doppler Cells after interpolation | 2048 | 2048 | 2048 | 2048 | 2048 | 2048 |
 
 
 ## Processing Statistics
@@ -228,25 +238,7 @@ SEASONDER_RDATA_OUTPUT=FALSE        # Disable .RData output
 SEASONDER_S3_OUTPUT_PATH            # S3 URI for processed output
 ```
 
-## Processing Period Directory Organization
 
-Raw data and configuration for PRIO and VILA radar sites are organized under the repository root in `PRIO/` and `VILA/`. Each site directory contains subdirectories corresponding to processing periods (distinct antenna pattern measurement processing periods), for example `PRIO1` or `VILA1`. Each period folder contains:
-
-- `configure.env`: Period-specific environment variables (analysis thresholds, S3 paths, IAM roles).
-- `Dockerfile`: Defines the container image with SeaSondeR and period-specific parameters.
-`run_process_hf_pipeline.sh`: Generates the manifest and submits AWS batch jobs.
-Raw `.cs`/`.cs4` spectral files and (optionally) local antenna pattern files.
-Auxiliary scripts (e.g., `generate_report.sh`, `generate_hf_processing_table.sh`) for reporting and table generation.
-
-
-At the repository root, `setup.sh` clones or updates the `SeaSondeRAWSLambdaDocker` pipeline repository into `SeaSondeRAWSLambdaDocker/`. Each site-period runner (e.g., `run_vila1.sh`, `run_prio1.sh`) then copies necessary pipeline artifacts from that folder into its period directory.
-Each site-period runner script (e.g. `run_vila1.sh`, `run_prio1.sh`) bootstraps its period folder by:
-
-- Defining site- and period-specific variables (AWS profile, bucket name, S3 paths, date range, IAM role/policy names, Lambda and ECR identifiers).
-- Copying core pipeline artifacts (`Dockerfile`, `configure_seasonder.sh`, `runtime.R`, `prepare_manifest.sh`, `run_batch_job.sh`) into the period folder.
-- Executing `configure_seasonder.sh` to create or update IAM roles, policies, ECR repository, and Lambda function (with the period’s environment variables).
-- Running `prepare_manifest.sh` to build the CSV/JSON manifest for that period’s spectral files.
-- Optionally invoking `run_batch_job.sh` to submit the AWS S3 Batch Operations job, which triggers the processing Lambda for each manifest entry.
 
 ## Detailed Workflow
 
@@ -281,20 +273,6 @@ The processing pipeline comprises seven key stages:
    - Adding new processing periods only requires a new subdirectory with raw data and a `configure.env` file.  
    - The manifest-driven, containerized architecture supports horizontal scaling and integration of new analysis modules.
 
-## Site Configuration Table
-
-The `sites_config.md` file presents a summary of antenna pattern metadata and processing parameters for each processing period. Example columns include:
-
-| Site | APM Date | Processing Period | Antenna Bearing | Frequency (MHz) | Range Cell (km) | N Doppler Cells |
-|------|----------|-------------------|-----------------|-----------------|-----------------|-----------------|
-| VILA1 | 2011-10-07 12:40:09 | 2011-09-30 0730–2015-08-05 1330 | 19° | 4.860 | 5.100 | 2048 |
-| …     | …        | …                 | …               | …               | …               | …               |
-
-
-For full details, run:
-```bash
-bash generate_hf_processing_table.sh
-```
 
 ## References
 
