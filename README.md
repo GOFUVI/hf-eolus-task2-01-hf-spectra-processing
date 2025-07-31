@@ -1,9 +1,9 @@
 
 ## Summary
 
-This repository implements a reproducible, containerized workflow to process high-frequency (HF) radar spectra from INTECMAR’s VILA and PRIO stations. The primary output is LLUV files containing radial metrics derived from SeaSonde spectral data. The pipeline supports processing period-specific configurations, automatic manifest generation, and scalable AWS batch processing (Lambda & S3 Batch Operations), ensuring consistent, traceable analyses with integrated error detection and reporting.
+This repository implements a reproducible, containerized workflow to process high-frequency (HF) radar spectra from INTECMAR’s VILA and PRIO stations. The primary output is LLUV files containing radial metrics derived from CODAR SeaSonde spectral data.
 
-Processed LLUV datasets are publicly available on Zenodo (PRIO [1]; VILA [2]). The underlying analysis is carried out by the SeaSondeR R package [3], and the AWS-based batch workflow applied to each station is detailed in [4].
+Processed LLUV datasets are publicly available on Zenodo (PRIO [1]; VILA [2]). The underlying analysis is carried out by the SeaSondeR R package [3], and the containerized pipeline featuring period-specific configurations, automatic manifest generation, and scalable AWS batch processing (Lambda & S3 Batch Operations) applied to each station is detailed in [4].
 
 ## Prerequisites
 
