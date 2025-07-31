@@ -66,7 +66,7 @@ The following table summarizes the configuration of each site during the process
 | Transmit Freq (MHz) | 4.860000 | 4.463000 | 4.463000 | 4.463000 | 4.860000 | 4.463000 |
 | Range cell resolution (km) | 5.100274 | 5.096745 | 5.096745 | 5.096745 | 5.100274 | 5.096745 |
 | N Range cells | 44 | 63 | 49 | 49 | 63 | 49 |
-| N Doppler Cells after interpolation | 2048 | 2048 | 2048 | 2048 | 2048 | 2048 |
+| N Doppler Cells after interpolation | 2,048 | 2,048 | 2,048 | 2,048 | 2,048 | 2,048 |
 
 ### Analysis Parameters
 
@@ -109,55 +109,57 @@ and execute the HF radar dataset processing pipeline:
    container build context and helper scripts.
 
 3. **Update AWS Lambda Environment (optional)**  
-   If `UPDATE_CONFIG=true`, then optionally refresh the IAM role and policy (`REFRESH_ROLE_POLICY_LAMBDA=true`),
-   build and push the Docker image to Amazon ECR, and create or update the container-based Lambda function
-   with the period’s environment variables.
+   If `UPDATE_CONFIG=true`, then optionally refresh the IAM role and policy (`REFRESH_ROLE_POLICY_LAMBDA=true`), and run 
+   `configure_seasonder.sh` to build and push the Docker image to Amazon ECR, and create or update the container-based Lambda function
+   with the period’s environment variables. For more details on this step, see [1].
 
 4. **Generate Manifest (optional)**  
    If `REFRESH_MANIFEST=true`, remove any existing manifest at the configured S3 key and invoke `prepare_manifest.sh`
-   (with the site code filter and processing date range) to produce a CSV and JSON manifest enumerating raw spectral files.
+   (with the site code filter and processing date range) to produce a CSV and JSON manifest enumerating raw spectral files. For more details on this step, see [1].
 
 5. **Submit Batch Processing Job (optional)**  
    If `RUN_JOBS=true`, execute `run_batch_job.sh` to launch an Amazon S3 Batch Operations (`LambdaInvoke`) job,
    which runs the containerized Lambda for each manifest entry. The script captures the batch job ID, manages confirmation,
-   and configures report prefixes for tracking.
+   and configures report prefixes for tracking. For more details on this step, see [1]
 
 By encapsulating these steps, `run_hf_dataset.sh` provides a single-entry-point, manifest-driven workflow that automates
 reproducible, period-specific deployments and scalable parallel execution of the SeaSonde HF spectral analysis.
 
 ## Processing Statistics
 
-This report summarizes the processing statistics from each subfolder’s `processing_report.md` file.
+This report summarizes the processing statistics from each processing period.
 
 | Subfolder | Files in manifest | Files processed successfully | Files with errors | Total files processed | Error % of manifest |
 | --- | --- | --- | --- | --- | --- |
-| PRIO1 | 47655 | 47019 | 636 | 47655 | 1.33% |
-| PRIO2 | 64868 | 63851 | 1017 | 64868 | 1.57% |
-| VILA1 | 65324 | 64868 | 456 | 65324 | 0.70% |
-| VILA2 | 14573 | 10537 | 4036 | 14573 | 27.70% |
-| VILA3 | 54843 | 54593 | 250 | 54843 | 0.46% |
-| VILA4 | 18152 | 18152 | 0 | 18152 | 0.00% |
+| PRIO1 | 47,655 | 47,019 | 636 | 47,655 | 1.33% |
+| PRIO2 | 64,868 | 63,851 | 1,017 | 64,868 | 1.57% |
+| VILA1 | 65,324 | 64,868 | 456 | 65,324 | 0.70% |
+| VILA2 | 14,573 | 10,537 | 4,036 | 14,573 | 27.70% |
+| VILA3 | 54,843 | 54,593 | 250 | 54,843 | 0.46% |
+| VILA4 | 18,152 | 18,152 | 0 | 18,152 | 0.00% |
 
-| **Total** | 265415 | 259020 | 6395 | 265415 | 2.41% |
+| **Total** | 265,415 | 259,020 | 6,395 | 265,415 | 2.41% |
 
-## Errors by type per subfolder
+### Errors by type per subfolder
 
-### PRIO1
+Below is a breakdown of error types and their occurrence counts for each processing subfolder. All error files were examined, and in every case the issues were traced to data corruption or failures in the spectra acquisition system.
+
+#### PRIO1
 
 | Type | Description | Count | % of total processed |
 | :--: | ----------- | -------: | ---------------------: |
 | 1 | No valid FOR data found. Please run seasonder_computeFORs first. | 629 | 1.32% |
 | 2 | Can't rename columns that don't exist | 7 | 0.01% |
 
-### PRIO2
+#### PRIO2
 
 | Type | Description | Count | % of total processed |
 | :--: | ----------- | -------: | ---------------------: |
-| 1 | No valid FOR data found. Please run seasonder_computeFORs first. | 1004 | 1.55% |
+| 1 | No valid FOR data found. Please run seasonder_computeFORs first. | 1,004 | 1.55% |
 | 2 | Can't rename columns that don't exist | 8 | 0.01% |
 | seasonder_find_spectra_file_type | Spectra file type not recognized. | 5 | 0.00% |
 
-### VILA1
+#### VILA1
 
 | Type | Description | Count | % of total processed |
 | :--: | ----------- | -------: | ---------------------: |
@@ -166,16 +168,16 @@ This report summarizes the processing statistics from each subfolder’s `proces
 | 3 | Invalid file size for nCsKind 2 (file size mismatch) | 5 | 0.01% |
 | 4 | Can't rename columns that don't exist | 1 | 0.00% |
 
-### VILA2
+#### VILA2
 
 | Type | Description | Count | % of total processed |
 | :--: | ----------- | -------: | ---------------------: |
-| 1 | No valid FOR data found. Please run seasonder_computeFORs first. | 4026 | 27.63% |
+| 1 | No valid FOR data found. Please run seasonder_computeFORs first. | 4,026 | 27.63% |
 | 2 | Can't rename columns that don't exist | 4 | 0.03% |
 | 3 | 'vec' must be sorted non-decreasingly and not contain NAs | 4 | 0.03% |
 | 4 | File has size 0 | 2 | 0.01% |
 
-### VILA3
+#### VILA3
 
 | Type | Description | Count | % of total processed |
 | :--: | ----------- | -------: | ---------------------: |
