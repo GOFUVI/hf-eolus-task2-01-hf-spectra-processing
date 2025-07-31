@@ -2,7 +2,7 @@
 
 This repository applies a reproducible, containerized workflow to process high-frequency (HF) radar spectra from INTECMAR’s VILA and PRIO stations. The primary output is LLUV files containing radial metrics derived from CODAR SeaSonde spectral data.
 
-The applied workflow features period-specific configurations, automatic manifest generation, and scalable AWS batch processing (Lambda & S3 Batch Operations) for each station, as detailed in [1](#ref1). The underlying analysis of the HF radar spectra is carried out by the SeaSondeR R package [2](#ref2). Finally, the processed LLUV datasets are publicly available on Zenodo (PRIO [3](#ref3); VILA [4](#ref4)).
+The applied workflow features period-specific configurations, automatic manifest generation, and scalable AWS batch processing (Lambda & S3 Batch Operations) for each station, as detailed in <a href="#ref1">[1]</a>. The underlying analysis of the HF radar spectra is carried out by the SeaSondeR R package <a href="#ref2">[2]</a>. Finally, the processed LLUV datasets are publicly available on Zenodo (PRIO <a href="#ref3">[3]</a>; VILA <a href="#ref4">[4]</a>).
 
 Data processing is structured into six distinct periods corresponding to antenna pattern measurement intervals. These map to the period-specific directories under VILA/ and PRIO/ as follows:
 - VILA1: 2011-09-30 → 2015-08-05
@@ -14,16 +14,16 @@ Data processing is structured into six distinct periods corresponding to antenna
 
 See the Site Configuration Table below for full period details and additional parameters.
 
-The setup.sh script at the repository root can be used to clone or update the SeaSondeRAWSLambdaDocker pipeline repository referenced in [1](#ref1), ensuring all pipeline artifacts are available locally.
+The setup.sh script at the repository root can be used to clone or update the SeaSondeRAWSLambdaDocker pipeline repository referenced in <a href="#ref1">[1]</a>, ensuring all pipeline artifacts are available locally.
 
 Orchestrating the applied workflow for each station and processing period, the `run_hf_dataset.sh` script at the repository root serves as the primary entry point: it sources the period-specific `configure.env`, copies the necessary pipeline artifacts from the `SeaSondeRAWSLambdaDocker` repository into the processing directory and invokes `configure_seasonder.sh` to deploy the Lambda environment, then runs `prepare_manifest.sh` to generate the CSV/JSON manifest, and finally calls `run_batch_job.sh` to launch the AWS S3 Batch Operation that executes the Lambda function for each raw data entry.
 
 ## Prerequisites
 
-Prerequisites for this workflow are described in [1](#ref1) and can also be accessed directly at:
+Prerequisites for this workflow are described in <a href="#ref1">[1]</a> and can also be accessed directly at:
 https://github.com/GOFUVI/SeaSondeRAWSLambdaDocker?tab=readme-ov-file#prerequisites
 
-As noted in the prerequisites of [1](#ref1), you must configure an AWS SSO profile before running the workflow.
+As noted in the prerequisites of <a href="#ref1">[1]</a>, you must configure an AWS SSO profile before running the workflow.
 
 **Configure AWS CLI with SSO**  
 AWS CLI allows you to interact with AWS services from the command line. To configure it for SSO (Single Sign-On), run:
@@ -34,7 +34,7 @@ aws configure sso
 
 This command will prompt you to authenticate and select an AWS SSO profile.
 
-As detailed in [1](#ref1) (see the Overview/Prerequisites section at
+As detailed in <a href="#ref1">[1]</a> (see the Overview/Prerequisites section at
 https://github.com/GOFUVI/SeaSondeRAWSLambdaDocker?tab=readme-ov-file#11-overview--prerequisites), the key technologies used in this workflow are listed.
 
 ## Processing Period Directory Organization
@@ -70,7 +70,7 @@ The following table summarizes the configuration of each site during the process
 
 ### Analysis Parameters
 
-The default spectra proccessing parameters are defined as environment variables in each processing period Dockerfile (copied from [1](#ref1)), and their default values match those in [1](#ref1); they can be overridden with `configure.env` files. Key parameters:
+The default spectra proccessing parameters are defined as environment variables in each processing period Dockerfile (copied from <a href="#ref1">[1]</a>), and their default values match those in <a href="#ref1">[1]</a>; they can be overridden with `configure.env` files. Key parameters:
 
 - **SEASONDER_NSM** (Doppler smoothing): number of Doppler bins for moving-average smoothing of the first-order region. Default: 2.
 - **SEASONDER_FDOWN** (Null Below Peak Power): descent level (in dB) below the Bragg peak maximum where null-search begins. Default: 10.
@@ -111,16 +111,16 @@ and execute the HF radar dataset processing pipeline:
 3. **Update AWS Lambda Environment (optional)**  
    If `UPDATE_CONFIG=true`, then optionally refresh the IAM role and policy (`REFRESH_ROLE_POLICY_LAMBDA=true`), and run 
    `configure_seasonder.sh` to build and push the Docker image to Amazon ECR, and create or update the container-based Lambda function
-   with the period’s environment variables. For more details on this step, see [1](#ref1).
+   with the period’s environment variables. For more details on this step, see <a href="#ref1">[1]</a>.
 
 4. **Generate Manifest (optional)**  
    If `REFRESH_MANIFEST=true`, remove any existing manifest at the configured S3 key and invoke `prepare_manifest.sh`
-   (with the site code filter and processing date range) to produce a CSV and JSON manifest enumerating raw spectral files. For more details on this step, see [1](#ref1).
+   (with the site code filter and processing date range) to produce a CSV and JSON manifest enumerating raw spectral files. For more details on this step, see <a href="#ref1">[1]</a>.
 
 5. **Submit Batch Processing Job (optional)**  
    If `RUN_JOBS=true`, execute `run_batch_job.sh` to launch an Amazon S3 Batch Operations (`LambdaInvoke`) job,
    which runs the containerized Lambda for each manifest entry. The script captures the batch job ID, manages confirmation,
-   and configures report prefixes for tracking. For more details on this step, see [1](#ref1)
+   and configures report prefixes for tracking. For more details on this step, see <a href="#ref1">[1]</a>
 
 By encapsulating these steps, `run_hf_dataset.sh` provides a single-entry-point, manifest-driven workflow that automates
 reproducible, period-specific deployments and scalable parallel execution of the SeaSonde HF spectral analysis.
@@ -190,10 +190,12 @@ This work has been funded by the HF-EOLUS project (TED2021-129551B-I00), finance
 
 ## References
 
-<a id="ref1"></a>1. Herrera Cortijo, J. L., Fernández-Baladrón, A., & Varela Benvenuto, R. (2025). *Batch Processing of SeaSonde HF-Radar Spectra Files on AWS with SeaSondeR R Package* (v1.0.0). Zenodo. https://doi.org/10.5281/zenodo.16453046
-<a id="ref2"></a>2. Herrera Cortijo, J. L., Fernández-Baladrón, A., & Varela Benvenuto, R. (2025). *SeaSondeR: Radial Metrics from SeaSonde HF-Radar Data* (v0.2.9). Zenodo. https://doi.org/10.5281/zenodo.16455051
-<a id="ref3"></a>3. **PRIO LLUV dataset**: https://doi.org/10.5281/zenodo.16528653
-<a id="ref4"></a>4. **VILA LLUV dataset**: https://doi.org/10.5281/zenodo.16458694
+<ol>
+<li id="ref1">Herrera Cortijo, J. L., Fernández-Baladrón, A., & Varela Benvenuto, R. (2025). *Batch Processing of SeaSonde HF-Radar Spectra Files on AWS with SeaSondeR R Package* (v1.0.0). Zenodo. https://doi.org/10.5281/zenodo.16453046</li>
+<li id="ref2">Herrera Cortijo, J. L., Fernández-Baladrón, A., & Varela Benvenuto, R. (2025). *SeaSondeR: Radial Metrics from SeaSonde HF-Radar Data* (v0.2.9). Zenodo. https://doi.org/10.5281/zenodo.16455051</li>
+<li id="ref3">**PRIO LLUV dataset**: https://doi.org/10.5281/zenodo.16528653</li>
+<li id="ref4">**VILA LLUV dataset**: https://doi.org/10.5281/zenodo.16458694</li>
+</ol>
 
 ---
 <p align="center">
