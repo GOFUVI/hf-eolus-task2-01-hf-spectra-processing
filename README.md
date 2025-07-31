@@ -70,7 +70,7 @@ The following table summarizes the configuration of each site during the process
 
 ### Analysis Parameters
 
-The core spectral analysis is driven by environment variables defined in each processing period Dockerfile. Key parameters:
+The default spectra proccessing parameters are defined as environment variables in each processing period Dockerfile (copied from [1]), and their default values match those in [1]; they can be overridden with `configure.env` files. Key parameters:
 
 - **SEASONDER_NSM** (Doppler smoothing): number of Doppler bins for moving-average smoothing of the first-order region. Default: 2.
 - **SEASONDER_FDOWN** (Null Below Peak Power): descent level (in dB) below the Bragg peak maximum where null-search begins. Default: 10.
@@ -92,7 +92,7 @@ The core spectral analysis is driven by environment variables defined in each pr
   4. minimum separation angle between dual-solution bearings in degrees (default: 20)
 - **SEASONDER_DISCARD_NO_SOLUTION**: discard bins with no MUSIC solution. Default: TRUE.
 
-Overrides and processing period-specific parameters (e.g., start/end dates, S3 bucket, IAM roles) are set in `configure.env` files.
+All processing periods override the default `SEASONDER_REJECT_NOISE_IONOSPHERIC_THRESHOLD` (0 dB) to 6 in their `configure.env` files.
 
 ## Workflow and Methodology
 
