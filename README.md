@@ -11,6 +11,7 @@ Data processing is structured into six distinct periods corresponding to antenna
 - VILA4: 2021-11-25 → 2023-05-10
 - PRIO1: 2011-08-04 → 2015-04-10
 - PRIO2: 2018-05-23 → 2023-11-23
+
 See the Site Configuration Table below for full period details and additional parameters.
 
 The setup.sh script at the repository root can be used to clone or update the SeaSondeRAWSLambdaDocker pipeline repository referenced in [1], ensuring all pipeline artifacts are available locally.
