@@ -1,4 +1,3 @@
-
 ## Summary
 
 This repository applies a reproducible, containerized workflow to process high-frequency (HF) radar spectra from INTECMAR’s VILA and PRIO stations. The primary output is LLUV files containing radial metrics derived from CODAR SeaSonde spectral data.
@@ -182,9 +181,24 @@ This report summarizes the processing statistics from each subfolder’s `proces
 | 1 | No valid FOR data found. Please run seasonder_computeFORs first. | 250 | 0.46% |
 
 
+## Acknowledgements
+
+This work has been funded by the HF-EOLUS project (TED2021-129551B-I00), financed by MICIU/AEI /10.13039/501100011033 and by the European Union NextGenerationEU/PRTR - BDNS 598843 - Component 17 - Investment I3.
+
+Dr. Ramiro Varela and Dr. Gabriel Roson are members of  the Marine Research Centre (CIM) of the University of Vigo, and have participated in the project HF-EOLUS.
+
 ## References
 
 1. Herrera Cortijo, J. L., Fernández-Baladrón, A., & Varela Benvenuto, R. (2025). *Batch Processing of SeaSonde HF-Radar Spectra Files on AWS with SeaSondeR R Package* (v1.0.0). Zenodo. https://doi.org/10.5281/zenodo.16453046
 2. Herrera Cortijo, J. L., Fernández-Baladrón, A., & Varela Benvenuto, R. (2025). *SeaSondeR: Radial Metrics from SeaSonde HF-Radar Data* (v0.2.9). Zenodo. https://doi.org/10.5281/zenodo.16455051
 3. **PRIO LLUV dataset**: https://doi.org/10.5281/zenodo.16528653
 4. **VILA LLUV dataset**: https://doi.org/10.5281/zenodo.16458694
+
+---
+<p align="center">
+  <img src="logos/EN_Funded_by_the_European_Union_RGB_POS.png" alt="Funded by the European Union" height="80"/>
+  <img src="logos/LOGO%20COLOR.png" alt="Logo Color" height="80"/>
+  <img src="logos/logo_aei.png" alt="AEI Logo" height="80"/>
+  <img src="logos/MCIU_header.svg" alt="MCIU Header" height="80"/>
+  <img src ="logos/Logotipo_CIM_original.png" alt="CIM logo" height="80"/>
+</p>
