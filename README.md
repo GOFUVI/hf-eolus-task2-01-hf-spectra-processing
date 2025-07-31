@@ -5,6 +5,19 @@ This repository implements a reproducible, containerized workflow to process hig
 
 Processed LLUV datasets are publicly available on Zenodo (PRIO [1]; VILA [2]). The underlying analysis is carried out by the SeaSondeR R package [3], and the containerized pipeline featuring period-specific configurations, automatic manifest generation, and scalable AWS batch processing (Lambda & S3 Batch Operations) applied to each station is detailed in [4].
 
+Data processing is structured into six distinct periods corresponding to antenna pattern measurement intervals. These map to the period-specific directories under VILA/ and PRIO/ as follows:
+- VILA1: 2011-09-30 → 2015-08-05
+- VILA2: 2015-11-13 → 2018-06-21
+- VILA3: 2018-06-21 → 2021-11-25
+- VILA4: 2021-11-25 → 2023-05-10
+- PRIO1: 2011-08-04 → 2015-04-10
+- PRIO2: 2018-05-23 → 2023-11-23
+See the Site Configuration Table below for full period details and additional parameters.
+
+The setup.sh script at the repository root can be used to clone or update the SeaSondeRAWSLambdaDocker pipeline repository referenced in [4], ensuring all pipeline artifacts are available locally.
+
+The `run_hf_dataset.sh` script at the repository root serves as the primary processing entry point: it sources the period-specific `configure.env`, invokes `prepare_manifest.sh` to generate the CSV/JSON manifest, and then calls `run_batch_job.sh` to launch the AWS S3 Batch Operation that executes the Lambda function for each raw data entry.
+
 ## Prerequisites
 
 Prerequisites for this workflow are described in [4] and can also be accessed directly at:
