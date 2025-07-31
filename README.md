@@ -184,9 +184,7 @@ This report summarizes the processing statistics from each subfolder’s `proces
 
 ## Acknowledgements
 
-This work has been funded by the HF-EOLUS project (TED2021-129551B-I00), financed by MICIU/AEI /10.13039/501100011033 and by the European Union NextGenerationEU/PRTR - BDNS 598843 - Component 17 - Investment I3.
-
-Dr. Ramiro Varela and Dr. Gabriel Roson are members of  the Marine Research Centre (CIM) of the University of Vigo, and have participated in the project HF-EOLUS.
+This work has been funded by the HF-EOLUS project (TED2021-129551B-I00), financed by MICIU/AEI /10.13039/501100011033 and by the European Union NextGenerationEU/PRTR - BDNS 598843 - Component 17 - Investment I3. Members of the Marine Research Centre (CIM) of the University of Vigo have participated in the development of this repository.
 
 ## References
 
