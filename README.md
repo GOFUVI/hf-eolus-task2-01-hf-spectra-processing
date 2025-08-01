@@ -1,6 +1,6 @@
 ## Summary
 
-This repository applies a reproducible, containerized workflow to process high-frequency (HF) radar spectra from INTECMAR’s VILA and PRIO stations. The primary output is LLUV files containing radial metrics derived from CODAR SeaSonde spectral data.
+This repository is part of the HF-EOLUS project and constitutes the first step towards Task 2: obtaining wind fields from HF radar data. Task 2 aims to use, evaluate, and develop the extraction of wind data from HF radar data. This repository applies a reproducible, containerized workflow to process high-frequency (HF) radar spectra from INTECMAR’s VILA and PRIO HF-Radar stations located on the Galician shelf (NW-Spain). The primary output is LLUV files containing radial metrics derived from CODAR SeaSonde spectral data.
 
 The applied workflow features period-specific configurations, automatic manifest generation, and scalable AWS batch processing (Lambda & S3 Batch Operations) for each station, as detailed in <a href="#ref1">[1]</a>. The underlying analysis of the HF radar spectra is carried out by the SeaSondeR R package <a href="#ref2">[2]</a>. Finally, the processed LLUV datasets are publicly available on Zenodo (PRIO <a href="#ref3">[3]</a>; VILA <a href="#ref4">[4]</a>).
 
