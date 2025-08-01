@@ -9,6 +9,7 @@
 - [Workflow and Methodology](#workflow-and-methodology)
 - [Processing Statistics](#processing-statistics)
 - [Acknowledgements](#acknowledgements)
+- [Disclaimer](#disclaimer)
 - [References](#references)
 
 
@@ -215,6 +216,9 @@ This work has been funded by the HF-EOLUS project (TED2021-129551B-I00), finance
 
 Spectra from INTECMAR's VILA and PRIO HF-Radar stations, between 2011-09-30 and 2023-11-23 have been transferred free of charge by the Observatorio
 Costeiro da Xunta de Galicia (<https://www.observatoriocosteiro.gal>) for their use. This Observatory is not responsible for the use of these data nor is it linked to the conclusions drawn with them. The Costeiro da Xunta de Galicia Observatory is part of the RAIA Observatory (<http://www.marnaraia.org>). We want to thank Dr. Pedro Montero from the INTECMAR for his help providing the spectra.
+
+## Disclaimer
+This software is provided "as is", without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose, and noninfringement. In no event shall the authors or copyright holders be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, or in connection with the software or the use or other dealings in the software.
 
 ## References
 
