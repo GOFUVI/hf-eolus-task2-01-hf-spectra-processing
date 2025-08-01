@@ -53,6 +53,7 @@ https://github.com/GOFUVI/SeaSondeRAWSLambdaDocker?tab=readme-ov-file#11-overvie
 
 Raw data and configuration for PRIO and VILA radar sites are organized under the repository root in `PRIO/` and `VILA/`. Each site directory contains subdirectories corresponding to processing periods, for example `PRIO1` or `VILA1`. Periods are defined by distinct antenna pattern measurements. When first created a period folder should contain a `configure.env` file with period-specific environment variables (analysis thresholds, S3 paths, IAM roles).
 
+```
 repo-root/
 ├── VILA/
 │   ├── VILA1/
@@ -62,7 +63,7 @@ repo-root/
 └── PRIO/
     ├── PRIO1/
     └── PRIO2/
-
+```
 
 In order to setup and run an analysis period we start by running `setup.sh` at the repository root, which clones or updates the `SeaSondeRAWSLambdaDocker` pipeline repository into `SeaSondeRAWSLambdaDocker/`. Then the user creates a period subfolder and includes the `configure.env`file. Then the user runs `run_hf_dataset.sh` on the period folder. `run_hf_dataset.sh` bootstraps a period folder and runs the analysis by:
 
