@@ -1,4 +1,4 @@
-# Project HF-EOLUS. Task 2. Obtaining Radial Metrics from INTECMAR's VILA and PRIO Stations Spectra.
+# Project HF-EOLUS. Task 2. Obtaining Radial Metrics from INTECMAR's VILA and PRIO Stations' Spectra.
 
 ## Table of Contents
 - [Summary](#summary)
@@ -68,7 +68,7 @@ repo-root/
     └── PRIO2/
 ```
 
-In order to setup and run an analysis period we start by running `setup.sh` at the repository root, which clones or updates the `SeaSondeRAWSLambdaDocker` pipeline repository into `SeaSondeRAWSLambdaDocker/`. Then the user creates a period subfolder and includes the `configure.env`file. Then the user runs `run_hf_dataset.sh` on the period folder. `run_hf_dataset.sh` bootstraps a period folder and runs the analysis by:
+In order to set up and run an analysis period, we start by running `setup.sh` at the repository root, which clones or updates the `SeaSondeRAWSLambdaDocker` pipeline repository into `SeaSondeRAWSLambdaDocker/`. Then the user creates a period subfolder and includes the `configure.env` file. Then the user runs `run_hf_dataset.sh` on the period folder. `run_hf_dataset.sh` bootstraps a period folder and runs the analysis by:
 
 - Defining site- and period-specific variables using the `configure.env` file.
 - Copying core pipeline artifacts (`Dockerfile`, `configure_seasonder.sh`, `runtime.R`, `prepare_manifest.sh`, `run_batch_job.sh`) into the period folder.
@@ -97,7 +97,7 @@ The following table summarizes the configuration of each site during the process
 
 ### Analysis Parameters
 
-The default spectra proccessing parameters are defined as environment variables in each processing period Dockerfile (copied from [1](#ref1)), and their default values match those in [1](#ref1); they can be overridden with `configure.env` files. Key parameters:
+The default spectra processing parameters are defined as environment variables in each processing period Dockerfile (copied from [1](#ref1)), and their default values match those in [1](#ref1); they can be overridden with `configure.env` files. Key parameters:
 
 - **SEASONDER_NSM** (Doppler smoothing): number of Doppler bins for moving-average smoothing of the first-order region. Default: 2.
 - **SEASONDER_FDOWN** (Null Below Peak Power): descent level (in dB) below the Bragg peak maximum where null-search begins. Default: 10.
