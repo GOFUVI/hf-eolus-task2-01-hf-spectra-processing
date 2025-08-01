@@ -1,3 +1,15 @@
+## Table of Contents
+- [Summary](#summary)
+- [Prerequisites](#prerequisites)
+- [Processing Period Directory Organization](#processing-period-directory-organization)
+- [Processing Periods Configuration](#processing-periods-configuration-table)
+- [Analysis Parameters](#analysis-parameters)
+- [Workflow and Methodology](#workflow-and-methodology)
+- [Processing Statistics](#processing-statistics)
+- [Acknowledgements](#acknowledgements)
+- [References](#references)
+
+
 ## Summary
 
 This repository is part of the HF-EOLUS project and constitutes the first step towards its Task 2: obtaining wind fields from oceanic HF-radar data. Task 2 aims to use, evaluate, and develop the extraction of wind data from HF-radar data. In HF-EOLUS methodology, the first step in wind extraction is obtaining radial metrics from the spectra collected by HF-Radar stations. This repository applies a reproducible, containerized workflow to process high-frequency (HF) radar spectra from INTECMAR’s VILA and PRIO HF-Radar stations located on the Galician shelf (NW-Spain). The primary output is LLUV files containing radial metrics derived from CODAR SeaSonde spectral data.
@@ -14,7 +26,7 @@ Data processing is structured into six distinct periods corresponding to antenna
 
 See the Site Configuration Table below for full period details and additional parameters.
 
-The setup.sh script at the repository root can be used to clone or update the SeaSondeRAWSLambdaDocker pipeline repository referenced in <a href="#ref1">[1]</a>, ensuring all pipeline artifacts are available locally.
+The `setup.sh` script at the repository root can be used to clone or update the SeaSondeRAWSLambdaDocker pipeline repository referenced in <a href="#ref1">[1]</a>, ensuring all pipeline artifacts are available locally.
 
 Orchestrating the applied workflow for each station and processing period, the `run_hf_dataset.sh` script at the repository root serves as the primary entry point: it sources the period-specific `configure.env`, copies the necessary pipeline artifacts from the `SeaSondeRAWSLambdaDocker` repository into the processing directory and invokes `configure_seasonder.sh` to deploy the Lambda environment, then runs `prepare_manifest.sh` to generate the CSV/JSON manifest, and finally calls `run_batch_job.sh` to launch the AWS S3 Batch Operation that executes the Lambda function for each raw data entry.
 
