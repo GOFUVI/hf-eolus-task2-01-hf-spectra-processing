@@ -1,6 +1,6 @@
 ## Summary
 
-This repository is part of the HF-EOLUS project and constitutes the first step towards Task 2: obtaining wind fields from HF radar data. Task 2 aims to use, evaluate, and develop the extraction of wind data from HF radar data. This repository applies a reproducible, containerized workflow to process high-frequency (HF) radar spectra from INTECMAR’s VILA and PRIO HF-Radar stations located on the Galician shelf (NW-Spain). The primary output is LLUV files containing radial metrics derived from CODAR SeaSonde spectral data.
+This repository is part of the HF-EOLUS project and constitutes the first step towards its Task 2: obtaining wind fields from oceanic HF-radar data. Task 2 aims to use, evaluate, and develop the extraction of wind data from HF-radar data. In HF-EOLUS methodology, the first step in wind extraction is obtaining radial metrics from the spectra collected by HF-Radar stations. This repository applies a reproducible, containerized workflow to process high-frequency (HF) radar spectra from INTECMAR’s VILA and PRIO HF-Radar stations located on the Galician shelf (NW-Spain). The primary output is LLUV files containing radial metrics derived from CODAR SeaSonde spectral data.
 
 The applied workflow features period-specific configurations, automatic manifest generation, and scalable AWS batch processing (Lambda & S3 Batch Operations) for each station, as detailed in <a href="#ref1">[1]</a>. The underlying analysis of the HF radar spectra is carried out by the SeaSondeR R package <a href="#ref2">[2]</a>. Finally, the processed LLUV datasets are publicly available on Zenodo (PRIO <a href="#ref3">[3]</a>; VILA <a href="#ref4">[4]</a>).
 
@@ -187,6 +187,9 @@ Below is a breakdown of error types and their occurrence counts for each process
 
 This work has been funded by the HF-EOLUS project (TED2021-129551B-I00), financed by MICIU/AEI /10.13039/501100011033 and by the European Union NextGenerationEU/PRTR - BDNS 598843 - Component 17 - Investment I3. Members of the Marine Research Centre (CIM) of the University of Vigo have participated in the development of this repository.
 
+Spectra from INTECMAR's VILA and PRIO HF-Radar stations, between 2011-09-30 and 2023-11-23 have been transferred free of charge by the Observatorio
+Costeiro da Xunta de Galicia (<https://www.observatoriocosteiro.gal>) for their use. This Observatory is not responsible for the use of these data nor is it linked to the conclusions drawn with them. The Costeiro da Xunta de Galicia Observatory is part of the RAIA Observatory (<http://www.marnaraia.org>).
+
 ## References
 
 <ol>
@@ -203,4 +206,9 @@ This work has been funded by the HF-EOLUS project (TED2021-129551B-I00), finance
   <img src="logos/logo_aei.png" alt="AEI Logo" height="80"/>
   <img src="logos/MCIU_header.svg" alt="MCIU Header" height="80"/>
   <img src ="logos/Logotipo_CIM_original.png" alt="CIM logo" height="80"/>
+  <img src ="logos/logo_intecmar.jpg" alt="CIM logo" height="80"/>
+  <img src ="logos/logo_raia_con_claim.svg" alt="CIM logo" height="80"/>
+  <img src ="logos/xunta_2021.svg" alt="CIM logo" height="80"/>
+
+  
 </p>
