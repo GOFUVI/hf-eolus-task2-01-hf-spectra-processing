@@ -1,3 +1,5 @@
+# Project HF-EOLUS. Task 2. Obtaining Radial Metrics from INTECMAR's VILA and PRIO Stations Spectra.
+
 ## Table of Contents
 - [Summary](#summary)
 - [Prerequisites](#prerequisites)
@@ -81,9 +83,9 @@ The following table summarizes the configuration of each site during the process
   | Parameter | VILA1 | VILA2 | VILA3 | VILA4 | PRIO1 | PRIO2 |
 |---|---|---|---|---|---|---|
 | Site | VILA | VILA | VILA | VILA | PRIO | PRIO |
-| APM Date | 2011 10 07 12 40 09 | 2015 10 19 13 19 43 | 2018 06 21 17 02 20 | 2021 11 25 11 00 54 | 2015 10 30 11 30 56 | 2021 11 25 10 49 45 |
-| Processing period (start) | 2011-09-30 07:30 | 2015-11-13 18:30 | 2018-06-21 17:02 | 2021-11-25 11:00 | 2011-08-04 12:00 | 2018-05-23 10:30 |
-| Processing period (end)   | 2015-08-05 13:30 | 2018-06-21 17:01 | 2021-11-25 10:59 | 2023-05-10 07:30 | 2015-04-10 09:30 | 2023-11-23 07:30 |
+| APM Date | 2011-10-07 12:40:09Z | 2015-10-19 13:19:43Z | 2018-06-21 17:02:20Z | 2021-11-25 11:00:54Z | 2015-10-30 11:30:56Z | 2021-11-25 10:49:45Z |
+| Processing period (start) | 2011-09-30 07:30Z | 2015-11-13 18:30Z | 2018-06-21 17:02Z | 2021-11-25 11:00Z | 2011-08-04 12:00Z | 2018-05-23 10:30Z |
+| Processing period (end)   | 2015-08-05 13:30Z | 2018-06-21 17:01Z | 2021-11-25 10:59Z | 2023-05-10 07:30Z | 2015-04-10 09:30Z | 2023-11-23 07:30Z |
 | Site Location (Lat Lon) | 43.1588833 -9.2108333 | 43.1588833 -9.2108333 | 43.1588833 -9.2108333 | 43.1588833 -9.2108333 | 43.5680000 -8.3140000 | 43.5680000 -8.3140000 |
 | Antenna Bearing (deg true N) | 19.0 | 19.0 | 19.0 | 19.0 | 9.0 | 9.0 |
 | Antenna Pattern resolution (deg) | 1.0 | 1.0 | 1.0 | 1.0 | 1.0 | 1.0 |
