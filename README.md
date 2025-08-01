@@ -188,7 +188,7 @@ Below is a breakdown of error types and their occurrence counts for each process
 This work has been funded by the HF-EOLUS project (TED2021-129551B-I00), financed by MICIU/AEI /10.13039/501100011033 and by the European Union NextGenerationEU/PRTR - BDNS 598843 - Component 17 - Investment I3. Members of the Marine Research Centre (CIM) of the University of Vigo have participated in the development of this repository.
 
 Spectra from INTECMAR's VILA and PRIO HF-Radar stations, between 2011-09-30 and 2023-11-23 have been transferred free of charge by the Observatorio
-Costeiro da Xunta de Galicia (<https://www.observatoriocosteiro.gal>) for their use. This Observatory is not responsible for the use of these data nor is it linked to the conclusions drawn with them. The Costeiro da Xunta de Galicia Observatory is part of the RAIA Observatory (<http://www.marnaraia.org>).
+Costeiro da Xunta de Galicia (<https://www.observatoriocosteiro.gal>) for their use. This Observatory is not responsible for the use of these data nor is it linked to the conclusions drawn with them. The Costeiro da Xunta de Galicia Observatory is part of the RAIA Observatory (<http://www.marnaraia.org>). We want to thank Dr. Pedro Montero from the INTECMAR for his help providing the spectra.
 
 ## References
 
