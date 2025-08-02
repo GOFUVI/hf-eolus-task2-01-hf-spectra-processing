@@ -235,10 +235,12 @@ This software is provided "as is", without warranty of any kind, express or impl
   <img src="logos/LOGO%20COLOR.png" alt="Logo Color" height="80"/>
   <img src="logos/logo_aei.png" alt="AEI Logo" height="80"/>
   <img src="logos/MCIU_header.svg" alt="MCIU Header" height="80"/>
-  <img src ="logos/Logotipo_CIM_original.png" alt="CIM logo" height="80"/>
+  <a href="https://cim.uvigo.gal">
+    <img src="logos/Logotipo_CIM_original.png" alt="CIM logo" height="80"/>
+  </a>
   <img src ="logos/logo_intecmar.jpg" alt="CIM logo" height="80"/>
   <img src ="logos/logo_raia_con_claim.svg" alt="CIM logo" height="80"/>
-  <a href="https://cim.uvigo.gal"><img src ="logos/xunta_2021.svg" alt="CIM logo" height="80"/></a>
+  <img src ="logos/xunta_2021.svg" alt="CIM logo" height="80"/>
 
   
 </p>
