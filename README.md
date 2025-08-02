@@ -255,7 +255,7 @@ This software is provided "as is", without warranty of any kind, express or impl
   <a href="http://www.marnaraia.org">
     <img src ="logos/logo_raia_con_claim.svg" alt="RAIA logo" height="80"/>
   </a>
-  <a href="https://www.observatoriocosteiro.gal">
+  <a href="http://www.observatoriocosteiro.gal">
     <img src ="logos/xunta_2021.svg" alt="Xunta logo" height="80"/>
   </a>
 </p>
