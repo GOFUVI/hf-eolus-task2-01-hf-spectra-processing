@@ -32,6 +32,7 @@ See the Site Configuration Table below for full period details and additional pa
 The `setup.sh` script at the repository root can be used to clone or update the SeaSondeRAWSLambdaDocker pipeline repository referenced in [1](#ref1), ensuring all pipeline artifacts are available locally.
 
 Orchestrating the applied workflow for each station and processing period, the `run_hf_dataset.sh` script at the repository root serves as the primary entry point: it sources the period-specific `configure.env`, copies the necessary pipeline artifacts from the `SeaSondeRAWSLambdaDocker` repository into the processing directory and invokes `configure_seasonder.sh` to deploy the Lambda environment, then runs `prepare_manifest.sh` to generate the CSV/JSON manifest, and finally calls `run_batch_job.sh` to launch the AWS S3 Batch Operation that executes the Lambda function for each raw data entry.
+> **Warning:** Running processes on AWS may incur costs. We do not take responsibility for any charges arising from the use of this software.
 
 ## Prerequisites
 
