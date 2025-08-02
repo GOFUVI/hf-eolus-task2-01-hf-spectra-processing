@@ -223,8 +223,8 @@ This software is provided "as is", without warranty of any kind, express or impl
 ## References
 
 <ol>
-<li id="ref1">Herrera Cortijo, J. L., Fernández-Baladrón, A., & Varela Benvenuto, R. (2025). *Batch Processing of SeaSonde HF-Radar Spectra Files on AWS with SeaSondeR R Package* (v1.0.0). Zenodo. https://doi.org/10.5281/zenodo.16453046</li>
-<li id="ref2">Herrera Cortijo, J. L., Fernández-Baladrón, A., & Varela Benvenuto, R. (2025). *SeaSondeR: Radial Metrics from SeaSonde HF-Radar Data* (v0.2.9). Zenodo. https://doi.org/10.5281/zenodo.16455051</li>
+<li id="ref1">Herrera Cortijo, J. L., Fernández-Baladrón, A., Rosón, G., Gil Coto, M., Dubert, J., & Varela Benvenuto, R. (2025). Complete Batch Processing of SeaSonde HF-Radar Spectra Files on AWS with SeaSondeR R Package (v1.0.0). Zenodo. https://doi.org/10.5281/zenodo.16453046</li>
+<li id="ref2">Herrera Cortijo, J. L., Fernández-Baladrón, A., Rosón, G., Gil Coto, M., Dubert, J., & Varela Benvenuto, R. (2025). SeaSondeR: Radial Metrics from SeaSonde HF-Radar Data (v0.2.9). Zenodo. https://doi.org/10.5281/zenodo.16455051</li>
 <li id="ref3">**PRIO LLUV dataset**: https://doi.org/10.5281/zenodo.16528653</li>
 <li id="ref4">**VILA LLUV dataset**: https://doi.org/10.5281/zenodo.16458694</li>
 </ol>
