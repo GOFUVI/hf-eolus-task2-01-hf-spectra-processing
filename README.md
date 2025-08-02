@@ -238,7 +238,7 @@ This software is provided "as is", without warranty of any kind, express or impl
   <img src ="logos/Logotipo_CIM_original.png" alt="CIM logo" height="80"/>
   <img src ="logos/logo_intecmar.jpg" alt="CIM logo" height="80"/>
   <img src ="logos/logo_raia_con_claim.svg" alt="CIM logo" height="80"/>
-  <img src ="logos/xunta_2021.svg" alt="CIM logo" height="80"/>
+  <a href="https://cim.uvigo.gal"><img src ="logos/xunta_2021.svg" alt="CIM logo" height="80"/></a>
 
   
 </p>
